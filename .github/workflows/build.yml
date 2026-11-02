@@ -1,46 +1,42 @@
 name: Build APK
+
 on:
   push:
     branches: [main, master]
   workflow_dispatch:
-permissions:
-  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
-      - name: Stamp build into index.html
-        run: sed -i "s/>BUILD [0-9]\{8\}-[0-9]\{4\}</>BUILD $(date -u +%Y%m%d-%H%M)-r${{ github.run_number }}</" www/index.html
-      - run: npm install
-      - run: npx cap add android
-      - run: npx cap sync android
-      - name: Use fixed signing key (so updates install over old APK)
+          java-version: 17
+
+      - name: Install deps
+        run: npm install
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync web assets
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android
         run: |
-          mkdir -p ~/.android
-          cp debug.keystore ~/.android/debug.keystore
-      - name: Bump version each build
-        run: |
-          sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" android/app/build.gradle
-          sed -i "s/versionName \"1.0\"/versionName \"1.${{ github.run_number }}\"/" android/app/build.gradle
-      - name: Build APK
-        run: cd android && chmod +x gradlew && ./gradlew assembleDebug
-      - name: Rename APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk ascii-fit.apk
-      - uses: actions/upload-artifact@v4
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          name: ascii-fit-apk
-          path: ascii-fit.apk
-      - name: Publish to Releases (direct download on phone)
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: build-${{ github.run_number }}
-          name: Build ${{ github.run_number }}
-          files: ascii-fit.apk
+          name: ascii-yomu-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
