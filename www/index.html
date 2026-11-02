@@ -19,7 +19,6 @@ pre{margin:0;font:inherit}
 .dot{position:absolute;bottom:14px;right:14px;width:12px;height:12px;background:var(--fg);animation:bk 1.6s steps(1) infinite}
 .dot::before{content:"";position:absolute;left:-9px;top:7px;width:5px;height:5px;background:var(--fg)}
 @keyframes bk{50%{opacity:.3}}
-@media (prefers-reduced-motion:reduce){.dot{animation:none}}
 button,.pri{font:inherit;letter-spacing:inherit;color:var(--fg);background:#000;border:1px solid var(--fg);padding:11px 10px;min-height:44px;cursor:pointer;touch-action:manipulation;border-radius:0}
 button:active,.pri:active{background:var(--fg);color:#000}
 .pri{display:block;text-align:center;padding:14px 10px;font-weight:700}
@@ -68,7 +67,6 @@ html.noscroll,html.noscroll body{overflow:hidden}
 .mini{min-height:0;padding:2px 8px;font-size:11px}
 #cont{width:100%}
 .cur{animation:bk 1s steps(1) infinite}
-@media (prefers-reduced-motion:reduce){.cur{animation:none}}
 #rd:not(.fw):not(.sm) #pg{touch-action:none}
 #im{will-change:transform}
 .gl{animation:gl .22s steps(4)}
@@ -76,7 +74,6 @@ html.noscroll,html.noscroll body{overflow:hidden}
 html.scan body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;background:repeating-linear-gradient(color-mix(in srgb,var(--fg) 9%,transparent) 0 1px,rgba(0,0,0,.4) 1px 3px);box-shadow:inset 0 0 100px rgba(0,0,0,.75)}
 html.scan body::before{content:"";position:fixed;left:0;right:0;top:-90px;height:90px;pointer-events:none;z-index:91;background:linear-gradient(transparent,color-mix(in srgb,var(--fg) 14%,transparent),transparent);animation:roll 5s linear infinite}
 @keyframes roll{to{top:100%}}
-@media (prefers-reduced-motion:reduce){html.scan body::before{animation:none;display:none}}
 #set{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:14px}
 #set .hud{width:100%;max-width:420px;background-color:#000;display:flex;flex-direction:column;gap:10px}
 .th{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.so{display:grid;gap:6px}
@@ -259,7 +256,7 @@ const Z={s:1,x:0,y:0};
 const zap=()=>{$('#im').style.transform=`translate(${Z.x}px,${Z.y}px) scale(${Z.s})`};
 const zreset=()=>{Z.s=1;Z.x=Z.y=0;zap()};
 const zclamp=()=>{const m=$('#im'),mx=(Z.s-1)*m.offsetWidth/2,my=(Z.s-1)*m.offsetHeight/2;if(Z.s<=1.01){Z.s=1;Z.x=Z.y=0}else{Z.x=Math.max(-mx,Math.min(mx,Z.x));Z.y=Math.max(-my,Math.min(my,Z.y))}zap()};
-const RM=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+const RM=()=>false;
 const fx=()=>{if(!S.fx||RM())return;const m=$('#im');m.classList.remove('gl');void m.offsetWidth;m.classList.add('gl')};
 let ct=0,cto;
 $('#rd').addEventListener('click',e=>{
