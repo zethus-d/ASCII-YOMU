@@ -1,6 +1,9 @@
 {
-  "appId": "com.asciifit.app",
-  "appName": "ASCII FIT",
+  "appId": "com.niket.asciiyomu",
+  "appName": "ASCII YOMU",
   "webDir": "www",
-  "backgroundColor": "#000000"
+  "backgroundColor": "#000000",
+  "android": {
+    "allowMixedContent": true
+  }
 }
