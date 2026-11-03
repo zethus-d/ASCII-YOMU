@@ -29,6 +29,7 @@ jobs:
       - name: Native code and offline fonts
         run: |
           cp native/MainActivity.java android/app/src/main/java/com/niket/asciiyomu/MainActivity.java
+          python3 native/patch_manifest.py
           mkdir -p www/fonts
           cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2 www/fonts/
           cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2 www/fonts/
