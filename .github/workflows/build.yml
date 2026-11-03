@@ -26,6 +26,16 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Native code and offline fonts
+        run: |
+          cp native/MainActivity.java android/app/src/main/java/com/niket/asciiyomu/MainActivity.java
+          mkdir -p www/fonts
+          cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2 www/fonts/
+          cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2 www/fonts/
+
+      - name: Generate icon and splash
+        run: npx capacitor-assets generate --android
+
       - name: Sync web assets
         run: npx cap sync android
 
